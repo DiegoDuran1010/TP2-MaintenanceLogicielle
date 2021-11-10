@@ -8,7 +8,7 @@ from network import NetSettings
 
 class GameClient:
     """Côté client de la couche application de la communication réseau."""
-    def __init__(self, host: str, port: int = NetSettings.SERVER_PORT) -> None:
+    def __init__(self, host: str, port: int = NetSettings.PORT_CLIENT) -> None:
         self.__network_client = NetClient(host, port)
         self.__session_id = '99'
 
@@ -71,11 +71,17 @@ class GameClient:
 
         return level
 
+
+    #Retourne c'est quelle session
     def who_am_i(self) -> int:
         return int(self.__session_id)
 
+
+    # le client commence la communication avec le serveur
     def start(self) -> None:
         self.__network_client.start()
 
+
+    # le client arrete la communication avec le serveur
     def stop(self) -> None:
         self.__network_client.stop()

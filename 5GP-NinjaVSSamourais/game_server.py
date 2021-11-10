@@ -26,10 +26,10 @@ class GameServer:
                 self.__send_to_all_but_source(net_msg)
             elif message.is_level():
                 self.send_level_to(message.source, str(game.level))
-
+    #get le IP du serveur
     def get_ip(self) -> str:
         return self.__network_server.get_ip()
-
+    #get le port du serveur
     def get_port(self) -> int:
         return self.__network_server.get_port()
 
@@ -43,8 +43,10 @@ class GameServer:
         net_msg = NetMessage(NetMessage.CMD_LVL, NetMessage.SRC_SERVER, destination, level)
         self.__send(net_msg)
 
+    # le serveur devient disponible pour le client
     def start(self) -> None:
         self.__network_server.start()
 
+    # le serveur arrete la disponibilité avec le client
     def stop(self) -> None:
         self.__network_server.stop()

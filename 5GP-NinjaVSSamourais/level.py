@@ -51,7 +51,7 @@ class Level:
                     positions[index]['y'] = y
 
         return positions
-
+    #get le tile pour savoir si c'est un obstacle ou pas
     def get_tile(self, x, y: int) -> Tile:
         return self.__tiles[y][x]
 
@@ -90,15 +90,15 @@ class Level:
                 columns.append(tile)
             self.__tiles.append(columns)
             data = data[width:]
-
+    #get height
     @property
     def height(self) -> int:
         return self.__height
-
+    #get number
     @property
     def number(self) -> int:
         return self.__number
-
+    #get width
     @property
     def width(self) -> int:
         return self.__width
