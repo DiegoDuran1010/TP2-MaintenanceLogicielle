@@ -1,6 +1,6 @@
 from enum import Enum
 from enum import auto
-
+#commentaire pour voir si le GITHUB marche
 
 from level import Level
 from players import Ninja
