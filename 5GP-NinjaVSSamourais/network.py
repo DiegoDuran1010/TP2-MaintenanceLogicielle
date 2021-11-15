@@ -14,7 +14,7 @@ LISTEN_QUEUE = 5
 class NetSettings:
     SERVER_HOST = '0.0.0.0'
     SERVER_PORT = 20000
-    PORT_CLIENT = 20003
+    PORT_CLIENT = 20000 #20003
 
 
 class NetMessage:
