@@ -250,7 +250,7 @@ class NetServer:
         try:
             self.__server_socket.bind((host, port))
         except socket.error:
-            print("ERROR : Failed to bind socket.")
+            print("ERROR : Failed to bind socket. ", str(socket.error) )
             sys.exit()
 
         self.listener = NetListener(self.__server_socket)
