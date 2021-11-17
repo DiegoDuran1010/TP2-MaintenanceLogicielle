@@ -43,12 +43,15 @@ class NinjaVSSamourais(arcade.Window):
 
                 color = Tile.TYPES_AND_COLORS.get(tile.tile_type)
 
+                color1 = Tile.get_color_for(tile.tile_type)
                 if not color:
                     color = Tile.TYPES_AND_COLORS.get(TileType.GROUND)
+                    color1 = Tile.get_color_for(TileType.GROUND)
 
                 shape = arcade.create_rectangle_filled(5 + x * 10, SCREEN_HEIGHT - (5 + y * 10), 8, 8, color)
                 self.__tile_shapes.append(shape)
                 self.__tiles.append(shape)
+
 
     @staticmethod
     def __draw_ninja(game: Game) -> None:
@@ -60,7 +63,7 @@ class NinjaVSSamourais(arcade.Window):
         couleur2 = 1
         couleur3 = 8
 
-        arcade.draw_rectangle_filled(5 + position, SCREEN_HEIGHT - (5 + position1), couleur3,couleur3,
+        arcade.draw_rectangle_filled(5 + position, SCREEN_HEIGHT - (5 + position1), couleur3, couleur3,
                                      BLACK)
 
         if ninja.facing_north:
@@ -91,9 +94,8 @@ class NinjaVSSamourais(arcade.Window):
             couleur3 = 1
             couleur4 = 8
 
-
-            arcade.draw_rectangle_filled(5 + position,
-                                         SCREEN_HEIGHT - (5 + samourai.position[1] * 10), couleur4, couleur4,
+            arcade.draw_rectangle_filled(5 + position, SCREEN_HEIGHT - (5 + samourai.position[1] * 10),
+                                         couleur4, couleur4,
                                          Samourai.COLORS[i - couleur3])
             if samourai.facing_north:
                 pass
