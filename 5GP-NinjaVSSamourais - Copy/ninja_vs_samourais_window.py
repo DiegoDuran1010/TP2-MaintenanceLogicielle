@@ -37,21 +37,19 @@ class NinjaVSSamourais(arcade.Window):
 
     def __build_gui_from_game_level(self) -> None:
         """Construit la grille visuelle représentant le niveau courant."""
-        for y in range(self.__game.level.height):
-            for x in range(self.__game.level.width):
-                tile = self.__game.level.get_tile(x, y)
+        game_level = self.__game.level
+        for y in range(game_level.height):
+            for x in range(game_level.width):
+                tile = game_level.get_tile(x, y)
+                tile_color = Tile.TYPES_AND_COLORS
+                color = tile_color.get(tile.tile_type)
 
-                color = Tile.TYPES_AND_COLORS.get(tile.tile_type)
-
-                color1 = Tile.get_color_for(tile.tile_type)
                 if not color:
-                    color = Tile.TYPES_AND_COLORS.get(TileType.GROUND)
-                    color1 = Tile.get_color_for(TileType.GROUND)
+                    color = tile_color.get(TileType.GROUND)
 
                 shape = arcade.create_rectangle_filled(5 + x * 10, SCREEN_HEIGHT - (5 + y * 10), 8, 8, color)
                 self.__tile_shapes.append(shape)
                 self.__tiles.append(shape)
-
 
     @staticmethod
     def __draw_ninja(game: Game) -> None:
@@ -59,7 +57,7 @@ class NinjaVSSamourais(arcade.Window):
         ninja = game.get_ninja()
         position = ninja.position[0] * 10
         position1 = ninja.position[1] * 10
-        couleur  = 6
+        couleur = 6
         couleur2 = 1
         couleur3 = 8
 
