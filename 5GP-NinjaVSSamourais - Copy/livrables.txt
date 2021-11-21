@@ -2,7 +2,7 @@ LIVRABLES 1
  L1.01 - Choisir une couleur plus visible (et qui n'est pas trop proche de celle des pierres et personnages) pour les murs - [TACHE FINI]
  L1.02 - Refactoriser NinjaVSSamourais.__draw_ninja() [TACHE FINI]
  L1.03 - Refactoriser NinjaVSSamourais.__draw_samourais() [TACHE FINI]
- L1.04 - Refactoriser Samourai.get_viewing_region() [À TERMINER]
+ L1.04 - Refactoriser Samourai.get_viewing_region() [TACHE FINI]
  L1.05 - Convertir les valeurs numériques (ex.: 50x50) en constantes [TACHE FINI] + DEMANDE PROF POUR REGION SIZE
  L1.06 - Éliminer le chaînage de méthodes dans ninja_vs_samourais_window.build_gui_from_game_level [TACHE FINI]
  L1.07 - Simplifier Tile.create_from_symbol en inversant le dictionnaire TYPES_AND_SYMBOL et en ajoutant un booléen pour walkable [À TERMINER]
