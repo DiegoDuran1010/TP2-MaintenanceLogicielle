@@ -86,13 +86,20 @@ class Ninja(Player):
 
 
 class Samourai(Player):
+    COULEUR_SAMOURAI_1 = (91, 155, 213)
+    COULEUR_SAMOURAI_2 = (112, 173, 71)
+    COULEUR_SAMOURAI_3 = (255, 192, 0)
+    COULEUR_SAMOURAI_4 = (255, 153, 51)
+    COULEUR_SAMOURAI_5 = (255, 102, 153)
+    COULEUR_SAMOURAI_6 = (153, 0, 255)
+
     """Représente les spécificités des personnages samouraïs."""
-    COLORS = [(91, 155, 213),  # samourai 1
-              (112, 173, 71),  # samourai 2
-              (255, 192, 0),  # samourai 3
-              (255, 153, 51),  # samourai 4
-              (255, 102, 153),  # samourai 5
-              (153, 0, 255)]  # samourai 6
+    COLORS = [COULEUR_SAMOURAI_1,
+              COULEUR_SAMOURAI_2,
+              COULEUR_SAMOURAI_3,
+              COULEUR_SAMOURAI_4,
+              COULEUR_SAMOURAI_5,
+              COULEUR_SAMOURAI_6]
 
     __VIEWING_REGION_DELTAS = []
     PETIT_CARRE = 7
