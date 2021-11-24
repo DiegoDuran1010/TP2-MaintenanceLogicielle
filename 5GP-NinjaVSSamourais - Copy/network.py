@@ -104,8 +104,14 @@ def data2message(string: str) -> NetMessage:
 
     cmd = string[NetMessage.CMD_OFFSET:NetMessage.CMD_OFFSET + NetMessage.CMD_BYTES]
     if len(cmd) != NetMessage.CMD_BYTES:
-        print("cmd pas chiffre exact!!!!")
+        print("cmd n'est pas de la bonne longueur!!!!")
         return None
+        if cmd.isdigit():
+            print("cmd n'est pas un string !!!!")
+            return None
+            if cmd not in [NetMessage.CMD_SID, NetMessage.CMD_LVL, NetMessage.CMD_POS]:
+                print("Cmd inconnu!!!!")
+                return 0
 
     src = string[NetMessage.SRC_OFFSET:NetMessage.SRC_OFFSET+NetMessage.SRC_BYTES]
     if not src.isdigit():
@@ -114,6 +120,9 @@ def data2message(string: str) -> NetMessage:
         if len(src) != NetMessage.SRC_BYTES:
             print("src pas chiffre exact!!!!")
             return None
+            if src not in [NetMessage.SRC_SERVER,NetMessage.SRC_UNDEFINED]:#peut-etre faudrait mettre les utilisateurs [0 to 6] parce qu'il faut se concentrer sur le script et non pas l'application, pourrait avoir 20 utilisateurs et pas changer (2021-11-24)
+                print("SOURCE INCONNUE")
+                return 0
 
     dest = string[NetMessage.DEST_OFFSET:NetMessage.DEST_OFFSET+NetMessage.DEST_BYTES]
     if not dest.isdigit():
@@ -122,7 +131,9 @@ def data2message(string: str) -> NetMessage:
         if len(dest) != NetMessage.DEST_BYTES:
             print("dest pas chiffre exact!!!!")
             return None
-
+            if dest not in [NetMessage.DEST_ALL]:
+                print("DESTINATION INCONNUE")
+                return 0
     data_length_str = string[NetMessage.DATA_LENGTH_OFFSET:NetMessage.DATA_LENGTH_OFFSET+NetMessage.DATA_LENGTH_BYTES]
     if not data_length_str.isdigit():
         print("data_length pas chiffre!!!")
@@ -328,6 +339,24 @@ class NetServer:
     def stop(self) -> None:
         self.listener.stop()
 
+"""Methode qui permet de retourner la longueur du message erroné"""
+def move_to_next(data) -> int:
+    length = 0
+    # get le string de la commande du premier message
+    for position in range(len(data)):
+        character = data[position]
+        if not character.isdigit():
+            length += 1
+
+    data = data[length:]
+
+    for position in range(len(data)):
+        character = data[position]
+        if character.isdigit():
+            length += 1
+
+    return length
+
 
 class NetRX(threading.Thread):
     """Tâche de réception des messages en provenance du réseau."""
@@ -352,9 +381,14 @@ class NetRX(threading.Thread):
 
         while len(data) > 0:
             message = data2message(data)
-            if message is not None:
+            if message:
                 messages.append(message)
-                data = data[NetMessage.HEADER_BYTES+len(message.data):]
+                data_length = len(message.data)
+            elif message == 0:
+                data = ''
+            else:
+                data_length = move_to_next(data)
+            data = data[NetMessage.HEADER_BYTES+data_length:]
 
         return messages
 

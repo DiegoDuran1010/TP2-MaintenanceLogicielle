@@ -13,7 +13,7 @@ LIVRABLES 2
  L2.03 - Valider les fichiers de niveau (même largeur de ligne, caractères valides, etc.) !SÉLÉNA!
 
  L2.04 - Valider le format des messages reçus (taille minimale, champs valeurs numériques, etc.).
-         Ne pas traiter les messages incorrects, mais afficher une erreur à la console.!TOUTE LA FUCKING ÉQUIPE YES SIRRRR!
+         Ne pas traiter les messages incorrects, mais afficher une erreur à la console.!TOUTE LA FUCKING ÉQUIPE YES SIRRRR! [FINI?]
          FAUT ENLEVER LES EXCEPTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
