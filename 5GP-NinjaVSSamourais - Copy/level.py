@@ -66,6 +66,7 @@ class Level:
                 for line in level_file:
                     symbols = line.strip()
                     columns = []
+                    # validation si les lettres du txt correspondent aux lettres du dict TYPES_AND_SYMBOLS de tile
                     for symbol in symbols:
                         tile = Tile.create_from_symbol(symbol)
                         columns.append(tile)

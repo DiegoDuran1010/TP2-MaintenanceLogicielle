@@ -99,19 +99,38 @@ def message2data(message: NetMessage) -> str:
 def data2message(string: str) -> NetMessage:
     """Transforme une chaîne de caractères (COMMAND|DATA LENGTH|DATA) reçue du réseau en message."""
     if len(string) < NetMessage.HEADER_BYTES:
-        raise Exception
+        print("LE HEADER DU MESSAGE EST TROP PETIT!!!!")
+        return None
+
+    cmd = string[NetMessage.CMD_OFFSET:NetMessage.CMD_OFFSET + NetMessage.CMD_BYTES]
+    if len(cmd) != NetMessage.CMD_BYTES:
+        print("cmd pas chiffre exact!!!!")
+        return None
 
     src = string[NetMessage.SRC_OFFSET:NetMessage.SRC_OFFSET+NetMessage.SRC_BYTES]
     if not src.isdigit():
-        raise Exception
+        print("src pas chiffre!!!!")
+        return None
+        if len(src) != NetMessage.SRC_BYTES:
+            print("src pas chiffre exact!!!!")
+            return None
 
     dest = string[NetMessage.DEST_OFFSET:NetMessage.DEST_OFFSET+NetMessage.DEST_BYTES]
     if not dest.isdigit():
-        raise Exception
+        print("dest pas chiffre!!!!")
+        return None
+        if len(dest) != NetMessage.DEST_BYTES:
+            print("dest pas chiffre exact!!!!")
+            return None
 
     data_length_str = string[NetMessage.DATA_LENGTH_OFFSET:NetMessage.DATA_LENGTH_OFFSET+NetMessage.DATA_LENGTH_BYTES]
     if not data_length_str.isdigit():
-        raise Exception
+        print("data_length pas chiffre!!!")
+        return None
+        if len(data_length_str) != NetMessage.DATA_LENGTH_OFFSET:
+            print("data_length pas chiffre exact!!!!")
+            return None
+
     data_length = int(data_length_str)
 
     cmd = string[NetMessage.CMD_OFFSET:NetMessage.CMD_OFFSET+NetMessage.CMD_BYTES]
@@ -327,13 +346,15 @@ class NetRX(threading.Thread):
 
     @staticmethod
     def __split(data: str) -> list:
-        """Découpe une chaîne de caractères reçue du réseau en messages."""
+        """Découpe une chaîne de caractères reçue du réseau en messages.
+            DANS LE CAS OU NOUS AVONS REZU PLUS D`UN MESSAGE"""
         messages = []
 
         while len(data) > 0:
             message = data2message(data)
-            messages.append(message)
-            data = data[NetMessage.HEADER_BYTES+len(message.data):]
+            if message is not None:
+                messages.append(message)
+                data = data[NetMessage.HEADER_BYTES+len(message.data):]
 
         return messages
 

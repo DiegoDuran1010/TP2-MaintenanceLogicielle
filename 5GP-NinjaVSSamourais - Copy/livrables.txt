@@ -11,9 +11,15 @@ LIVRABLES 2
  L2.01 - Empêcher les samouraïs d'éclairer à travers les murs !SARAH!
  L2.02 - Terminer le programme, serveur et client, correctement (threads bloqués sur le socket) !ERVIN!
  L2.03 - Valider les fichiers de niveau (même largeur de ligne, caractères valides, etc.) !SÉLÉNA!
- L2.04 - Valider le format des messages reçus (taille minimale, champs valeurs numériques, etc.). Ne pas traiter les messages incorrects, mais afficher une erreur à la console.!TOUTE LA FUCKING ÉQUIPE YES SIRRRR!
+
+ L2.04 - Valider le format des messages reçus (taille minimale, champs valeurs numériques, etc.).
+         Ne pas traiter les messages incorrects, mais afficher une erreur à la console.!TOUTE LA FUCKING ÉQUIPE YES SIRRRR!
+         FAUT ENLEVER LES EXCEPTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
  L2.05 - Détruire la fenêtre arcade sur CTRL-C, pour l'application client !LE DORENSKY!
- L2.06 - Ajouter les points de vie (10) pour le ninja et pour les samouraïs !SÉLÉNA + DIEGO!
+ L2.06 - Ajouter les points de vie (10) pour le ninja et pour les samouraïs !DIEGO!
  L2.07 - N'afficher que les samouraïs qui sont présents!SARAH!
 
 LIVRABLES 3
