@@ -4,11 +4,12 @@ from game import Game
 from game import GameState
 from game_client import GameClient
 from players import Samourai
+from players import Player
 from tile import Tile
 from tile import TileType
 
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 600
 BLACK = (0, 0, 0)
 ORANGE = (255, 192, 0)
 SCREEN_TITLE = 'Ninja vs Samouraïs'
@@ -23,20 +24,22 @@ class NinjaVSSamourais(arcade.Window):
     def __init__(self, game: Game, game_client: GameClient,
                  width: int = SCREEN_WIDTH, height: int = SCREEN_HEIGHT, title: str = SCREEN_TITLE):
         super().__init__(width, height, title)
-
         arcade.set_background_color(arcade.color.BLACK)
 
         self.__game = game
         self.__game_client = game_client
+
 
         self.__tile_shapes = []
         self.__tiles = arcade.ShapeElementList()
 
         self.__time_since_last_move = 0.0
         self.__moving_east = self.__moving_west = self.__moving_north = self.__moving_south = False
-
+        arcade.draw_circle_filled(50, 285, 9, arcade.color.RED)
     def __build_gui_from_game_level(self) -> None:
         """Construit la grille visuelle représentant le niveau courant."""
+
+
         game_level = self.__game.level
         for y in range(game_level.height):
             for x in range(game_level.width):
@@ -60,6 +63,14 @@ class NinjaVSSamourais(arcade.Window):
         couleur = 6
         couleur2 = 1
         couleur3 = 8
+        position_de_x = 60
+        arcade.draw_text("VIE NINJA", 60, 60, arcade.color.WHITE)
+
+        #boucle qui dessine la barre de vie des ninja
+        for i in range(10):
+            arcade.draw_circle_filled(position_de_x, 40, 8, arcade.color.RED)
+            position_de_x = position_de_x + 20
+
 
         arcade.draw_rectangle_filled(5 + position, SCREEN_HEIGHT - (5 + position1), couleur3, couleur3,
                                      BLACK)
@@ -83,6 +94,13 @@ class NinjaVSSamourais(arcade.Window):
         for i in range(1, 7):
 
             samourai = game.get_player(i)
+            arcade.draw_text("VIE SAMOURAIS", 300, 60, arcade.color.WHITE)
+            position_de_x = 300
+            #boucle pour dessiner la barre de vie des samourais
+            for j in range(10):
+                arcade.draw_circle_filled(position_de_x, 40, 8, arcade.color.GREEN)
+                position_de_x = position_de_x + 20
+
 
             position = samourai.position[0] * 10
             position2 = (3 + samourai.position[1] * 10)
@@ -112,6 +130,7 @@ class NinjaVSSamourais(arcade.Window):
                                              SCREEN_HEIGHT - position2, couleur2, couleur3, BLACK)
                 arcade.draw_rectangle_filled(2 + position,
                                              SCREEN_HEIGHT - position3, couleur, couleur, BLACK)
+
 
     @staticmethod
     def __draw_viewing_region(game: Game) -> bool:
@@ -143,6 +162,24 @@ class NinjaVSSamourais(arcade.Window):
         """Dessine l'écran sur une base régulière."""
         arcade.start_render()
 
+
+        arcade.draw_text("VIE SAMOURAIS",300,60,arcade.color.WHITE)
+        arcade.draw_circle_filled(300, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(320, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(340, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(360, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(380, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(400, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(420, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(440, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(460, 40, 8, arcade.color.GREEN)
+        arcade.draw_circle_filled(480, 40, 8, arcade.color.GREEN)
+
+
+
+
+
+
         if self.__game.state == GameState.PLAYING_LEVEL:
             ninja_in_viewing_region = False
 
@@ -155,6 +192,9 @@ class NinjaVSSamourais(arcade.Window):
                 self.__draw_ninja(self.__game)
 
             self.__draw_samourais(self.__game)
+
+
+
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.UP:

@@ -1,12 +1,11 @@
 from level import Level
 
-
 class Player:
     """Représente la base d'un personnage du jeu (ce qui est commun au ninja et aux samouraïs)."""
 
     def __init__(self, x, y: int) -> None:
+        self.vie = 0
         self.position = (x, y)
-
         self.__facing_south = True
         self.__facing_north = self.__facing_east = self.__facing_west = False
 
@@ -53,6 +52,10 @@ class Player:
         self.__face_west()
         return self.__move(level, -1, 0)
 
+    def vie(self)->None:
+        self.__vie = 10
+
+
     @property
     def facing_east(self) -> bool:
         return self.__facing_east
@@ -73,9 +76,19 @@ class Player:
     def position(self) -> tuple:
         return self.__position
 
+    @property
+    def vie(self) -> int:
+        return self.__vie
+
+
     @position.setter
     def position(self, position: tuple) -> None:
         self.__position = position
+
+    @vie.setter
+    def vie(self, vie:int)->None:
+        self.__vie = vie
+
 
 
 class Ninja(Player):
@@ -83,6 +96,7 @@ class Ninja(Player):
 
     def __init__(self, x, y: int) -> None:
         super().__init__(x, y)
+
 
 
 class Samourai(Player):
