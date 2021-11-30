@@ -3,12 +3,12 @@ from level import Level
 
 class Player:
     """Représente la base d'un personnage du jeu (ce qui est commun au ninja et aux samouraïs)."""
-
     def __init__(self, x, y: int) -> None:
-        self.vie = 0
         self.position = (x, y)
+
         self.__facing_south = True
         self.__facing_north = self.__facing_east = self.__facing_west = False
+        self.__life = 10
 
     def __move(self, level: Level, delta_x, delta_y: int) -> bool:
         tile = level.get_tile(self.position[0] + delta_x, self.position[1] + delta_y)
@@ -53,9 +53,6 @@ class Player:
         self.__face_west()
         return self.__move(level, -1, 0)
 
-    def vie(self) -> int:
-        self.__vie = 10
-
     @property
     def facing_east(self) -> bool:
         return self.__facing_east
@@ -77,63 +74,51 @@ class Player:
         return self.__position
 
     @property
-    def vie(self) -> int:
-        return self.__vie
+    def life(self) -> int:
+        return self.__life
 
     @position.setter
     def position(self, position: tuple) -> None:
         self.__position = position
-
-    @vie.setter
-    def vie(self, vie: int) -> None:
-        self.__vie = vie
-
+    @life.setter
+    def life(self, impact: int) -> None:
+        self.__life -= impact
 
 class Ninja(Player):
     """Représente les spécificités du personnage ninja (éventuellement)."""
-
     def __init__(self, x, y: int) -> None:
         super().__init__(x, y)
+        self.__shuriken_hit = 1
 
+    def hit(self):
+        return self.__shuriken_hit
 
 class Samourai(Player):
-    COULEUR_SAMOURAI_1 = (91, 155, 213)
-    COULEUR_SAMOURAI_2 = (112, 173, 71)
-    COULEUR_SAMOURAI_3 = (255, 192, 0)
-    COULEUR_SAMOURAI_4 = (255, 153, 51)
-    COULEUR_SAMOURAI_5 = (255, 102, 153)
-    COULEUR_SAMOURAI_6 = (153, 0, 255)
-
     """Représente les spécificités des personnages samouraïs."""
-    COLORS = [COULEUR_SAMOURAI_1,
-              COULEUR_SAMOURAI_2,
-              COULEUR_SAMOURAI_3,
-              COULEUR_SAMOURAI_4,
-              COULEUR_SAMOURAI_5,
-              COULEUR_SAMOURAI_6]
+    COLORS = [(91, 155, 213),   # samourai 1
+              (112, 173, 71),   # samourai 2
+              (255, 192, 0),    # samourai 3
+              (255, 153, 51),   # samourai 4
+              (255, 102, 153),  # samourai 5
+              (153, 0, 255)]    # samourai 6
 
-    __VIEWING_REGION_DELTAS = []
-    PETIT_CARRE = 7
-    MESURE_CADRE = 9
-
-    # Carré plein
-    for i in range(PETIT_CARRE):
-        for j in range(PETIT_CARRE):
-            pos = i - 3, j - 3
-            __VIEWING_REGION_DELTAS.append(pos)
-
-    # Cadre extérieur non plein
-    DONNEES_CADRE = [4, -4, 1, -1, 0]
-
-    for i in range(MESURE_CADRE):
-        for j in range(MESURE_CADRE):
-            if i - 4 in DONNEES_CADRE and j - 4 in DONNEES_CADRE and abs(j - 4) != abs(i - 4):
-                pos = i - 4, j - 4
-                if pos not in __VIEWING_REGION_DELTAS:
-                    __VIEWING_REGION_DELTAS.append(pos)
+    __VIEWING_REGION_DELTAS = [(-1, -4), (0, -4), (1, -4),
+                               (-3, -3), (-2, -3), (-1, -3), (0, -3), (1, -3), (2, -3), (3, -3),
+                               (-3, -2), (-2, -2), (-1, -2), (0, -2), (1, -2), (2, -2), (3, -2),
+                               (-4, -1), (-3, -1), (-2, -1), (-1, -1), (0, -1), (1, -1), (2, -1), (3, -1), (4, -1),
+                               (-4, 0), (-3, 0), (-2, 0), (-1, 0), (1, 0), (2, 0), (3, 0), (4, 0),
+                               (-4, 1), (-3, 1), (-2, 1), (-1, 1), (0, 1), (1, 1), (2, 1), (3, 1), (4, 1),
+                               (-3, 2), (-2, 2), (-1, 2), (0, 2), (1, 2), (2, 2), (3, 2),
+                               (-3, 3), (-2, 3), (-1, 3), (0, 3), (1, 3), (2, 3), (3, 3),
+                               (-1, 4), (0, 4), (1, 4)]
 
     def __init__(self, x, y: int) -> None:
         super().__init__(x, y)
+        self.__katana_hit = 2
+
+    def hit(self):
+        print("je lance un katana !")
+        return self.__katana_hit
 
     @staticmethod
     def check_viewing_region_tile(x, y, width, height: int) -> tuple or None:

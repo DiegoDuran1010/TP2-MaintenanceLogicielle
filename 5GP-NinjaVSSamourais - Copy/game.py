@@ -34,6 +34,9 @@ class Game:
         for i in range(6):
             self.__players.append(Samourai(player_positions[i+1]['x'], player_positions[i+1]['y']))
 
+    def nb_players(self)-> int:
+        return len(self.__players)
+
     def i_am_the_ninja(self) -> bool:
         return self.__player_is_ninja
 

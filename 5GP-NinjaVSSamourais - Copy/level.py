@@ -1,4 +1,4 @@
-from network import NetMessage
+from network import NetMessage, NetListener
 from tile import Tile
 from tile import TileType
 
@@ -63,14 +63,28 @@ class Level:
 
         try:
             with open(filename, "r") as level_file:
+                premiere_ligne = level_file.readline()
+                compteur_temoin = len(premiere_ligne) - 1
+
+            with open(filename, "r") as level_file:
+                compteur2 = 0
+
+                liste = ['S', 'W', 'N', '1', '2', '3', '4', '5', '6', 'E', ' ']
+
                 for line in level_file:
                     symbols = line.strip()
                     columns = []
-                    # validation si les lettres du txt correspondent aux lettres du dict TYPES_AND_SYMBOLS de tile
+                    compteur2 = len(symbols)
+                    if compteur2 != compteur_temoin:
+                        print("pas la même longueur")
                     for symbol in symbols:
-                        tile = Tile.create_from_symbol(symbol)
-                        columns.append(tile)
+                        if symbol not in liste:
+                            print("le symbol n'est pas dans la liste")
+                        else:
+                            tile = Tile.create_from_symbol(symbol)
+                            columns.append(tile)
                     self.__tiles.append(columns)
+
         except FileNotFoundError:
             print("Fichier introuvable : " + filename)
 
@@ -103,3 +117,14 @@ class Level:
     @property
     def width(self) -> int:
         return self.__width
+
+
+class PlayersInGame(NetListener):
+    players = NetListener.get_nb()
+    global players_in_games
+    players_in_games = players
+
+    @staticmethod
+    def get_nb_players_in_game():
+        return players_in_games
+

@@ -2,6 +2,10 @@ import socket
 import sys
 import threading
 
+from actives_players import ActivePlayers
+global active_players_net
+active_players_net = ActivePlayers()
+
 ADD_TO_SESSION_ID = 1
 
 from queue import Queue
@@ -99,49 +103,19 @@ def message2data(message: NetMessage) -> str:
 def data2message(string: str) -> NetMessage:
     """Transforme une chaîne de caractères (COMMAND|DATA LENGTH|DATA) reçue du réseau en message."""
     if len(string) < NetMessage.HEADER_BYTES:
-        print("LE HEADER DU MESSAGE EST TROP PETIT!!!!")
-        return None
-
-    cmd = string[NetMessage.CMD_OFFSET:NetMessage.CMD_OFFSET + NetMessage.CMD_BYTES]
-    if len(cmd) != NetMessage.CMD_BYTES:
-        print("cmd n'est pas de la bonne longueur!!!!")
-        return None
-        if cmd.isdigit():
-            print("cmd n'est pas un string !!!!")
-            return None
-            if cmd not in [NetMessage.CMD_SID, NetMessage.CMD_LVL, NetMessage.CMD_POS]:
-                print("Cmd inconnu!!!!")
-                return 0
+        raise Exception
 
     src = string[NetMessage.SRC_OFFSET:NetMessage.SRC_OFFSET+NetMessage.SRC_BYTES]
     if not src.isdigit():
-        print("src pas chiffre!!!!")
-        return None
-        if len(src) != NetMessage.SRC_BYTES:
-            print("src pas chiffre exact!!!!")
-            return None
-            if src not in [NetMessage.SRC_SERVER,NetMessage.SRC_UNDEFINED]:#peut-etre faudrait mettre les utilisateurs [0 to 6] parce qu'il faut se concentrer sur le script et non pas l'application, pourrait avoir 20 utilisateurs et pas changer (2021-11-24)
-                print("SOURCE INCONNUE")
-                return 0
+        raise Exception
 
     dest = string[NetMessage.DEST_OFFSET:NetMessage.DEST_OFFSET+NetMessage.DEST_BYTES]
     if not dest.isdigit():
-        print("dest pas chiffre!!!!")
-        return None
-        if len(dest) != NetMessage.DEST_BYTES:
-            print("dest pas chiffre exact!!!!")
-            return None
-            if dest not in [NetMessage.DEST_ALL]:
-                print("DESTINATION INCONNUE")
-                return 0
+        raise Exception
+
     data_length_str = string[NetMessage.DATA_LENGTH_OFFSET:NetMessage.DATA_LENGTH_OFFSET+NetMessage.DATA_LENGTH_BYTES]
     if not data_length_str.isdigit():
-        print("data_length pas chiffre!!!")
-        return None
-        if len(data_length_str) != NetMessage.DATA_LENGTH_OFFSET:
-            print("data_length pas chiffre exact!!!!")
-            return None
-
+        raise Exception
     data_length = int(data_length_str)
 
     cmd = string[NetMessage.CMD_OFFSET:NetMessage.CMD_OFFSET+NetMessage.CMD_BYTES]
@@ -263,7 +237,13 @@ class NetListener(threading.Thread):
             print(f"Client {session_id} connected from {ip_address[0]}:{ip_address[1]}")
             session_id += ADD_TO_SESSION_ID
 
+            active_players_net.nb_players = session_id
+
         self.server_socket.close()
+
+    @staticmethod
+    def get_nb():
+        return active_players_net.nb_players
 
     def stop(self) -> None:
         self.running = False
@@ -339,24 +319,6 @@ class NetServer:
     def stop(self) -> None:
         self.listener.stop()
 
-"""Methode qui permet de retourner la longueur du message erroné"""
-def move_to_next(data) -> int:
-    length = 0
-    # get le string de la commande du premier message
-    for position in range(len(data)):
-        character = data[position]
-        if not character.isdigit():
-            length += 1
-
-    data = data[length:]
-
-    for position in range(len(data)):
-        character = data[position]
-        if character.isdigit():
-            length += 1
-
-    return length
-
 
 class NetRX(threading.Thread):
     """Tâche de réception des messages en provenance du réseau."""
@@ -375,20 +337,13 @@ class NetRX(threading.Thread):
 
     @staticmethod
     def __split(data: str) -> list:
-        """Découpe une chaîne de caractères reçue du réseau en messages.
-            DANS LE CAS OU NOUS AVONS REZU PLUS D`UN MESSAGE"""
+        """Découpe une chaîne de caractères reçue du réseau en messages."""
         messages = []
 
         while len(data) > 0:
             message = data2message(data)
-            if message:
-                messages.append(message)
-                data_length = len(message.data)
-            elif message == 0:
-                data = ''
-            else:
-                data_length = move_to_next(data)
-            data = data[NetMessage.HEADER_BYTES+data_length:]
+            messages.append(message)
+            data = data[NetMessage.HEADER_BYTES+len(message.data):]
 
         return messages
 
